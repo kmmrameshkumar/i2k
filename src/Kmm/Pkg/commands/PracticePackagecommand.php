@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 // Completely for new module
 
 
-class PracticePackagecommand extends AbstractCommand {
+class PracticePackageCommand extends AbstractCommand {
 
 	/**
 	 * The console command name.

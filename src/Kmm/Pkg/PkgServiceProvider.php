@@ -5,8 +5,9 @@ use Kmm\Pkg\Commands\BundleModuleCommand;
 use Kmm\Pkg\Commands\BundleTagCommand;
 use Kmm\Pkg\Commands\BundleRefreshCommand;
 use Kmm\Pkg\Commands\BundlePublishCommand;
-use Kmm\Pkg\Commands\BundlePracticecommand;
-use Kmm\Pkg\Commands\PracticePackagecommand;
+use Kmm\Pkg\Commands\BundlePracticeCommand;
+use Kmm\Pkg\Commands\PracticePackageCommand;
+use Kmm\Pkg\Commands\TenantCommand;
 
 class PkgServiceProvider extends ServiceProvider {
 
@@ -33,7 +34,7 @@ class PkgServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		// Bundle specific
-		foreach(['Refresh', 'Practice', 'Module', 'Tag'] as $command)
+		foreach(['Refresh', 'Practice', 'Module', 'Tag', 'Tenant'] as $command)
         {
             $this->{"register$command"}();
         }
@@ -44,6 +45,20 @@ class PkgServiceProvider extends ServiceProvider {
             $this->{"register$command"}();
         }
 	}
+    
+    /**
+     * Register the tenant
+     */
+    protected function registerTenant()
+    {
+        // Add modules command
+        $this->app['bundle.tenant'] = $this->app->share(function($app)
+        {
+             return new TenantCommand($app);
+        });
+
+        $this->commands('bundle.tenant');
+    }
 
     /**
      * Register the module
@@ -94,7 +109,7 @@ class PkgServiceProvider extends ServiceProvider {
     {
         $this->app['bundle.practice'] = $this->app->share(function($app)
         {
-            return new BundlePracticecommand($app);
+            return new BundlePracticeCommand($app);
         });
 
         $this->commands('bundle.practice');
@@ -107,7 +122,7 @@ class PkgServiceProvider extends ServiceProvider {
     {
         $this->app['practice.package'] = $this->app->share(function($app)
         {
-            return new PracticePackagecommand($app);
+            return new PracticePackageCommand($app);
         });
 
         $this->commands('practice.package');
