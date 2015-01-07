@@ -34,7 +34,7 @@ class PkgServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		// Bundle specific
-		foreach(['BundlePackage', 'Practice', 'Module', 'Tag', 'Tenant'] as $command)
+		foreach(['Practice', 'Module', 'Tag', 'Tenant'] as $command)
         {
             $this->{"register$command"}();
         }
