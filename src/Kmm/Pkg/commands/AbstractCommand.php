@@ -216,9 +216,6 @@ abstract class AbstractCommand extends Command {
 		$this->seedModules();
 		$this->seedTags();
 
-		// User::create( $this->user->toArray() );
-
-		
 		$this->call('modules:seed', ['--modules'=>"Defaults"]);
 	}
 
