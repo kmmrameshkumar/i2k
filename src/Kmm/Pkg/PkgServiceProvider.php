@@ -3,6 +3,7 @@
 use Illuminate\Support\ServiceProvider;
 use Kmm\Pkg\Commands\BundleModuleCommand;
 use Kmm\Pkg\Commands\BundleTagCommand;
+use Kmm\Pkg\Commands\BundlePackageCommand;
 use Kmm\Pkg\Commands\BundlePublishCommand;
 use Kmm\Pkg\Commands\BundlePracticeCommand;
 use Kmm\Pkg\Commands\PracticePackageCommand;
@@ -33,7 +34,7 @@ class PkgServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		// Bundle specific
-		foreach(['Practice', 'Module', 'Tag', 'Tenant'] as $command)
+		foreach(['BundlePackage', 'Practice', 'Module', 'Tag', 'Tenant'] as $command)
         {
             $this->{"register$command"}();
         }
@@ -95,7 +96,7 @@ class PkgServiceProvider extends ServiceProvider {
         // Add modules command
 		$this->app['bundle.package'] = $this->app->share(function($app)
 		{
-			 return new \Kmm\Pkg\Commands\BundlePackageCommand($app);
+			 return new BundlePackageCommand($app);
 		});
 
         $this->commands('bundle.package');
