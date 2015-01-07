@@ -235,6 +235,8 @@ abstract class AbstractCommand extends Command {
 		$u->id = $this->user->id;
 		$u->package_activated = 1;
 		$u->save();
+		
+		DB::statement("ALTER TABLE users AUTO_INCREMENT = {$this->user->id};");
 
 		$u->Packages()->attach([$this->package_id=>['active'=>1]]);
 	}

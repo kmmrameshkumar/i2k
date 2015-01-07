@@ -30,7 +30,7 @@ class TenantCommand extends AbstractCommand {
 		$email = $this->option('email');
 
 		$repo = $this->app['config']->get('pkg::user_repository');
-		$this->userRepo = new $repo();
+		$this->userRepo = \App::make($repo);
 		$user = $this->userRepo->findByEmail($email);
 		
 		$this->info($user->id);

@@ -39,7 +39,7 @@ class BundlePracticeCommand extends AbstractCommand {
 		$this->setConnection();
 
 		$repo = $this->app['config']->get('pkg::user_repository');
-		$this->userRepo = new $repo();
+		$this->userRepo = \App::make($repo);
 		$this->user = $this->userRepo->isActive($this->email);
 		$this->user_packages = $this->user->Packages()->whereActive(0)->orderBy('user_packages.id', 'DESC')->get(['user_packages.id','user_id', 'package_id', 'active'])->first();
 		if(!isset($this->user_packages->package_id)){
