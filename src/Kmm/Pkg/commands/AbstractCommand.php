@@ -10,8 +10,9 @@ use App\Project\Packages\Models\Package as Package;
 use App\Project\Modules\Models\Module;
 use App\Project\Menus\Models\Menu;
 use App\Project\UserModules\Models\UserModule;
+use App\Project\Permissions\Models\Permission;
 use App\Project\Packages\Models\UserPackage;
-use DB;
+use DB, Config;
 
 /**
 * Bundle console commands
@@ -216,7 +217,33 @@ abstract class AbstractCommand extends Command {
 		$this->seedModules();
 		$this->seedTags();
 
+		// User::create( $this->user->toArray() );
+
+		
 		$this->call('modules:seed', ['--modules'=>"Defaults"]);
+
+		$this->seedPermissions();
+	}
+
+	public function seedPermissions()
+	{
+		$modules = $this->getOnlyModules();
+
+		foreach ($modules as $module) {
+			$m = $module['name'];
+			$mp = Config::get("{$m}::permissions");
+			if(!empty($mp)){
+				foreach ($mp as $action) {
+					Permission::create([
+						'role_id' => 4,
+						'type' => 'allow',
+						'action' => $action,
+						'resource' => $m
+					]);
+				}
+			}
+		}
+
 	}
 
 	/**
