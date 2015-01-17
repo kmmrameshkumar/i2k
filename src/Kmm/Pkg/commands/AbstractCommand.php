@@ -9,11 +9,10 @@ use App\Project\Users\Models\User;
 use App\Project\Packages\Models\Package as Package;
 use App\Project\Modules\Models\Module;
 use App\Project\Menus\Models\Menu;
-use App\Project\Roles\Models\RoleModule;
-use App\Project\Tags\Models\TagModule;
 use App\Project\UserModules\Models\UserModule;
 use App\Project\Permissions\Models\Permission;
 use App\Project\Packages\Models\UserPackage;
+use App\Project\Doctors\Models\Doctor;
 use DB, Config;
 
 /**
@@ -224,10 +223,23 @@ abstract class AbstractCommand extends Command {
 		
 		$this->call('modules:seed', ['--modules'=>"Defaults"]);
 
-		$this->seedSecretaryPermissions();
+		$this->seedPermissions();
+
+		$this->seedDoctor();
 	}
 
-	public function seedSecretaryPermissions()
+	public function seedDoctor()
+	{
+		Doctor::create([
+			'name' => $this->user->username,
+			'short_name' => $this->user->username,
+			'email' => $this->user->email,
+			'is_default' => 1,
+			'speciality_id' => 17
+		]);
+	}
+
+	public function seedPermissions()
 	{
 		$modules = $this->getOnlyModules();
 
@@ -235,7 +247,6 @@ abstract class AbstractCommand extends Command {
 			$m = $module['name'];
 			$mp = Config::get("{$m}::permissions");
 			if(!empty($mp)){
-				$exist_modules[] = $module['id'];
 				foreach ($mp as $action) {
 					Permission::create([
 						'role_id' => 4,
@@ -245,25 +256,6 @@ abstract class AbstractCommand extends Command {
 					]);
 				}
 			}
-		}
-
-		$tag_modules = TagModule::where('user_id', $this->user->id)->get();
-
-		foreach ($tag_modules as $tag_module) {
-			$except = [33,34,35];
-			// Roles, Permissions, Users
-			if(in_array($tag_module->module_id, $except)) continue;
-
-			RoleModule::create([
-				'tag_id' => $tag_module->tag_id,
-				'module_id' => $tag_module->module_id,
-				'order' => $tag_module->order,
-				'show' => $tag_module->show,
-				'parent_id' =>  $tag_module->parent_id,
-				'role_id' =>  4,
-				'is_customised' =>  $tag_module->is_customised
-			]);
-
 		}
 
 	}
