@@ -201,7 +201,7 @@ abstract class TagAbstractCommand extends Command {
 				$this->register = true;
 
 				$this->module_name = $module['name'];
-				$this->label = $module['name'];
+				$this->label = $module['label'];
 				$this->slug = $module['slug'];
 				$this->icon = $module['icon'];
 				$this->active = $module['active'];
@@ -230,7 +230,7 @@ abstract class TagAbstractCommand extends Command {
 				$this->register = true;
 
 				$this->tag_name = $this->package_name.$tag['name'];
-				$this->label = $tag['name'];
+				$this->label = $tag['label'];
 				$this->slug = $tag['default_slug'];
 				$this->icon = $tag['icon'];
 				$this->active = $tag['active'];
