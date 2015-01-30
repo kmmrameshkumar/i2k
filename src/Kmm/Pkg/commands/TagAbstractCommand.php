@@ -217,7 +217,8 @@ abstract class TagAbstractCommand extends Command {
 	{
 		$this->performDefaultModules();
 
-		$packages = ['Ortho', 'Neuro'];
+		// $packages = ['Ortho', 'Neuro'];
+		$packages = ['Ortho'];
 
 		foreach ($packages as $package) {
 
